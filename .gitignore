@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 backend/.env.DS_Store
 node_modules
+=======
+__pycache__/
+*.pyc
+>>>>>>> upstream/feat/llm

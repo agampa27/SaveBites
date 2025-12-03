@@ -4,19 +4,40 @@ import './Generate.css'
 
 export default function Generate({pantryItems, time, difficulty, budget, allergens, appliances, cuisines }) {
 	const [recipes, setRecipes] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState(null);
 
-	function generateRecipe() {
-		let testRecipe = {
-			name: "Cheese Pizza",
-			ingredients: "Tomato, Egg, Flour, Cheese",
-			instructions: "Make pizza, put in oven",
-			appliances: "Oven",
-			budget: "10"
-		};
+	async function generateRecipe() {
+		setLoading(true);
+		setError(null);
+		
+		try {
+			const response = await fetch('http://localhost:3010/generate-recipes', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					pantryItems,
+					time,
+					budget,
+					allergens,
+					appliances,
+					cuisines
+				})
+			});
 
-		setRecipes(recipes.concat(testRecipe));
+			const data = await response.json();
+			
+			if (data.success) {
+				setRecipes(data.recipes);
+			} else {
+				setError('Failed to generate recipes');
+			}
+		} catch (err) {
+			setError('Network error: ' + err.message);
+		} finally {
+			setLoading(false);
+		}
 	}
-
 	function recipeDisplay(recipe) {
 		return (
 			<p>
@@ -68,7 +89,15 @@ export default function Generate({pantryItems, time, difficulty, budget, allerge
 					)}
 				</div>
 
-				<button className="btn-primary" onClick={generateRecipe}>Generate with ${budget} budget and {difficulty.toLowerCase()} difficulty within {Math.floor(time / 60)} {Math.floor(time / 60) == 1 ? "hour" : "hours"} and {time % 60} {time % 60 == 1 ? "minute" : "minutes"}</button>
+				<button 
+					className="btn-primary" 
+					onClick={generateRecipe}
+					disabled={loading}
+				>
+					{loading ? 'Generating...' : `Generate with $${budget} budget and ${difficulty.toLowerCase()} difficulty within ${Math.floor(time / 60)} ${Math.floor(time / 60) == 1 ? "hour" : "hours"} and ${time % 60} ${time % 60 == 1 ? "minute" : "minutes"}`}
+				</button>
+
+				{error && <p style={{color: 'red'}}>{error}</p>}
 
 			</div>
 
