@@ -53,7 +53,7 @@ try:
     
     print(f"DEBUG: Total recipes generated: {len(recipes)}", file=sys.stderr, flush=True)
     print("DEBUG: Ranking recipes", file=sys.stderr, flush=True)
-    ranked_recipes = ranker.rank(user, pantry, recipes)
+    #ranked_recipes = ranker.rank(user, pantry, recipes)
     
     print("DEBUG: Creating output", file=sys.stderr, flush=True)
     output = [{
@@ -63,7 +63,7 @@ try:
         'time': r.cook_minutes,
         'cuisine': r.cuisine,
         'tags': r.tags
-    } for r in ranked_recipes]
+    } for r in recipes]
     
     print("DEBUG: Printing JSON output", file=sys.stderr, flush=True)
     print(json.dumps(output), flush=True)

@@ -1,13 +1,13 @@
 from data_classes.UserProfile import UserProfile
 from data_classes.UserPantry import Pantry
 from data_classes.Recipes import Recipe
-from validator.Validator import Validator
+from llm_pipeline.LLMValidator import Validator
 
 class Ranker:
   def __init__(self, api_key):
     self.validator = Validator(api_key)
   def rank(self, user_profile, pantry, recipes):
-    valid_recipes = self.validator.validator(user_profile, pantry, recipes)
+    valid_recipes = self.validator.validate(user_profile, pantry, recipes)
     ranking = {}
     for recipe in valid_recipes:
       cuisine_score = -1

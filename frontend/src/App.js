@@ -14,7 +14,9 @@ import { useState } from 'react';
 function App() {
   const [cuisines, setCuisines] = useState([]);
   const [appliances, setAppliances] = useState([]);
-  const [allergens, setAllergens] = useState([]);
+  const [allergens, setAllergens] = useState([
+    'Rice'
+  ]);
   const [pantryItems, setPantryItems] = useState([
     'Apples',
     'Bananas',
@@ -28,9 +30,9 @@ function App() {
     'Salt',
     'Pepper'
   ]);
-  const budgetState = useState(0);
+  const budgetState = useState(50);
   const difficultyState = useState("Beginner");
-  const timeState = useState(0);
+  const timeState = useState(200);
 
   return (
     <Router>
